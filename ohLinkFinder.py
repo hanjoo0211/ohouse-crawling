@@ -3,20 +3,21 @@ from selenium.webdriver.common.by import By
 import time
 
 
-def ohLinkFinder(toSearch: str):
+def ohLinkFinder(toSearch: str, howMany: int):
     options = webdriver.ChromeOptions()
     options.add_experimental_option("excludeSwitches", ["enable-logging"])
     options.add_argument('start-maximized')
     driver = webdriver.Chrome('chromedriver.exe', options=options)
 
     toSearch = toSearch.replace("#", "%23")
-    url = f"https://ohou.se/cards/feed?query={toSearch}"
+    # url = f"https://ohou.se/cards/feed?query={toSearch}"
+    url = f"https://ohou.se/productions/feed?query={toSearch}"
 
     linkSet = set()
     driver.get(url)
     
     last_page_height = driver.execute_script("return document.documentElement.scrollHeight")
-    while len(linkSet) <= 300:
+    while len(linkSet) <= howMany:
         linkList = driver.find_elements(By.CLASS_NAME, 'card-search-item__content__link')
         for _ in linkList:
             link = _.get_attribute('href')
@@ -49,6 +50,3 @@ def infinite_loop(driver):
                 break
         else:
             last_page_height = new_page_height
-
-
-print(ohLinkFinder("#몬스테라"))

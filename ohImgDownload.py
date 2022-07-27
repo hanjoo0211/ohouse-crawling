@@ -4,7 +4,7 @@ import re
 import urllib.request
 
 
-def ohImgDownload(url: str):
+def ohImgDownload(url: str, saveName: str):
     html = requests.get(url).text
     soup = bs(html, 'html.parser')
     imgHtmlList = soup.select('img')
@@ -16,8 +16,11 @@ def ohImgDownload(url: str):
             link = re.findall(p, str(i))
             link = link[0].replace("2x,", "").replace(" 3x","")
 
-            saveName = re.findall(r'snapshots/.+?\?', link)
-            saveName = saveName[0].replace("snapshots/", "").replace("?", "")
+            # fileName = re.findall(r'snapshots/.+?\?', link)
+            # fileName = fileName[0].replace("snapshots/", "").replace("?", "")
+
+            # fileExt = re.findall(r'\.[a-z]+', fileName)[0]
             break
 
+    # urllib.request.urlretrieve(link, saveName + fileExt)
     urllib.request.urlretrieve(link, saveName)
